@@ -1,0 +1,30 @@
+# secrets (none are needed; keep the pattern anyway)
+.env
+*.key
+*secrets*.json
+
+# downloaded images and model weights (fetched by `make data` / ultralytics)
+data/images/
+data/openimages/
+*.pt
+*.onnx
+*.tflite
+
+# run output
+out/
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# editors
+.vscode/
+.idea/
+*.swp
