@@ -6,8 +6,10 @@ The app's schema (docs/FIREBASE_SCHEMA.md in that repo) gives each alert a `type
 localised rendering. The vision types it lists include vision_overcrowding,
 vision_activity_low, vision_bird_count_drop and vision_stale, with threshold names
 hotspotSpikeRatio, activityLowSustainedCount, birdCountDropPct,
-birdCountSustainedCount and staleMinutes. The rule logic itself is not public, so
-the rules below are this repo's interpretation of those names.
+birdCountSustainedCount and staleMinutes. The app's own engine is public
+(app/lib/core/services/vision_alert_engine.dart) but works on the analyser's snapshot
+summary with rules relative to the last five snapshots; the rules below are this repo's
+simpler interpretation of those names for a box-per-frame detector (see README).
 """
 
 from __future__ import annotations

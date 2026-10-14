@@ -74,7 +74,7 @@ no per-bird truth. 57 images, 138 boxed chickens, confidence threshold 0.25, 640
 The nano model, which is the one that fits an edge box, misses four birds in ten and
 under-counts on average by almost one bird per photo. Lowering the confidence threshold
 does not recover them: at 0.1 its recall is still 0.66 and its count MAE never drops below
-0.95 (figure 02). The medium model reaches recall 0.83 but starts inventing birds
+0.9 (figure 02). The medium model reaches recall 0.83 but starts inventing birds
 (precision 0.81), and even it only gets the exact count on half of the photos.
 
 ![confidence sweep](figures/02_conf_sweep.png)
@@ -112,8 +112,16 @@ spread, 12 is everyone in one cell). On the flock image with the most detections
 (`type`, `severity`, `message`, `value`, `threshold`, `createdAt`, `deviceId: "vision-ai"`,
 `params`) and the vision types and threshold names listed in that repo's Firebase schema
 (`hotspotSpikeRatio`, `activityLowSustainedCount`, `birdCountDropPct`,
-`birdCountSustainedCount`, `staleMinutes`). The rule logic is this repo's interpretation,
-because the app's own `vision_alert_engine` is not public:
+`birdCountSustainedCount`, `staleMinutes`). The app's own engine is public
+(`app/lib/core/services/vision_alert_engine.dart`, a port of its JS prototype) and works on
+the analyser's per-snapshot summary (bird count, hotspot intensity, activity label, health
+and feeding shares). The rules below are **not** a port of it: they are this repo's simpler
+interpretation of the same names, driven by what a detector gives (boxes per frame). The main
+differences: the app's overcrowding and bird-count-drop rules are relative to the median of
+the previous five snapshots, this repo uses a fixed capacity and a baseline from the first
+five frames; the app's low-activity rule takes the analyser's `low` label, this repo measures
+centre movement; the app also has unhealthy-rate, feeding-stalled and two combined rules that
+need per-bird health labels a COCO detector cannot give.
 
 | alert | fires when | severity |
 |---|---|---|
