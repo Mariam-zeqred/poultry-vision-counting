@@ -55,7 +55,11 @@ class ImageResult:
 
 
 def summarise(results: list[ImageResult]) -> dict:
-    """Aggregate metrics overall and per image kind."""
+    """Aggregate metrics overall and per image kind.
+
+    "flock" images (crowds covered by group boxes) have no per-bird ground truth, so they
+    are left out of "all" and reported only by how many birds the detector found.
+    """
 
     def agg(rs: list[ImageResult]) -> dict:
         n = len(rs)
@@ -75,7 +79,16 @@ def summarise(results: list[ImageResult]) -> dict:
             "recall": tp / (tp + fn) if tp + fn else 0.0,
         }
 
-    out = {"all": agg(results)}
-    for kind in sorted({r.kind for r in results}):
-        out[kind] = agg([r for r in results if r.kind == kind])
+    counted = [r for r in results if r.kind != "flock"]
+    out = {"all": agg(counted)}
+    for kind in sorted({r.kind for r in counted}):
+        out[kind] = agg([r for r in counted if r.kind == kind])
+    flock = [r for r in results if r.kind == "flock"]
+    if flock:
+        out["flock"] = {
+            "images": len(flock),
+            "pred_birds": sum(r.pred for r in flock),
+            "mean_pred": sum(r.pred for r in flock) / len(flock),
+            "false_positives_outside_group_boxes": sum(r.fp for r in flock),
+        }
     return out

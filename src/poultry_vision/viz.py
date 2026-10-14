@@ -39,13 +39,10 @@ def heatmap_overlay(image: Image.Image, grid: np.ndarray, out: Path, title: str 
 
     fig, ax = plt.subplots(figsize=(6, 6 * image.height / image.width))
     ax.imshow(image)
-    ax.imshow(
-        grid,
-        cmap="inferno",
-        alpha=0.45,
-        extent=(0, image.width, image.height, 0),
-        interpolation="bilinear",
-    )
+    peak = float(grid.max()) if grid.size else 0.0
+    rgba = plt.get_cmap("inferno")(grid / peak if peak > 0 else grid)
+    rgba[..., 3] = 0.65 * (grid / peak if peak > 0 else 0)  # transparent where nobody is
+    ax.imshow(rgba, extent=(0, image.width, image.height, 0), interpolation="bilinear")
     ax.set_axis_off()
     ax.set_title(title, fontsize=9)
     fig.tight_layout()

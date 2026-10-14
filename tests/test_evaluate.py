@@ -29,8 +29,15 @@ def test_summarise():
         ImageResult("a", "multi", 3, 2, 2, 0, 1),
         ImageResult("b", "multi", 2, 3, 2, 1, 0),
         ImageResult("c", "single", 1, 1, 1, 0, 0),
+        ImageResult("d", "flock", 0, 7, 0, 1, 0),
     ]
     s = summarise(rs)
+    assert s["flock"] == {
+        "images": 1,
+        "pred_birds": 7,
+        "mean_pred": 7.0,
+        "false_positives_outside_group_boxes": 1,
+    }
     assert s["all"]["images"] == 3 and s["all"]["exact_rate"] == 1 / 3
     assert abs(s["all"]["mae"] - 2 / 3) < 1e-9 and abs(s["all"]["bias"]) < 1e-9
     assert s["multi"]["precision"] == 4 / 5 and s["multi"]["recall"] == 4 / 5

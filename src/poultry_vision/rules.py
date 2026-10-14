@@ -17,12 +17,14 @@ from dataclasses import dataclass, field
 from poultry_vision.boxes import Box, centre_distance
 
 DEVICE_ID = "vision-ai"
+HOTSPOT_GRID = (3, 4)  # rows, cols for the hotspot ratio: coarse, so a few birds cannot trip it
 
 
 @dataclass
 class VisionThresholds:
     capacity: int = 30  # birds the camera's floor area may hold (stocking density * area)
-    hotspot_spike_ratio: float = 3.0  # peak cell / mean cell before a huddle counts as a hotspot
+    hotspot_spike_ratio: float = 4.0  # peak cell / mean cell on HOTSPOT_GRID (4 = a third of the
+    # birds in one twelfth of the floor); max possible is 12
     activity_low: float = 0.01  # mean centre movement per frame, image diagonal = 1
     activity_low_sustained_count: int = 3  # consecutive quiet frames before alerting
     bird_count_drop_pct: float = 20.0  # % below the baseline count

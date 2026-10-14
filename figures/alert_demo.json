@@ -1,0 +1,93 @@
+[
+  {
+    "type": "vision_activity_low",
+    "severity": "warning",
+    "message": "low activity for 3 frames",
+    "value": 0.0012,
+    "threshold": 0.01,
+    "createdAt": 510000,
+    "deviceId": "vision-ai",
+    "params": {
+      "frames": 3,
+      "activity": 0.0012
+    }
+  },
+  {
+    "type": "vision_activity_low",
+    "severity": "critical",
+    "message": "low activity for 6 frames",
+    "value": 0.0008,
+    "threshold": 0.01,
+    "createdAt": 600000,
+    "deviceId": "vision-ai",
+    "params": {
+      "frames": 6,
+      "activity": 0.0008
+    }
+  },
+  {
+    "type": "vision_bird_count_drop",
+    "severity": "critical",
+    "message": "bird count 8 is 33% below baseline 12",
+    "value": 8,
+    "threshold": 9.6,
+    "createdAt": 960000,
+    "deviceId": "vision-ai",
+    "params": {
+      "dropPct": 33.3,
+      "baseline": 12.0,
+      "frames": 3
+    }
+  },
+  {
+    "type": "vision_overcrowding",
+    "severity": "warning",
+    "message": "birds huddled: hotspot ratio 9.0",
+    "value": 9.0,
+    "threshold": 4.0,
+    "createdAt": 1350000,
+    "deviceId": "vision-ai",
+    "params": {
+      "hotspotRatio": 9.0,
+      "count": 8
+    }
+  },
+  {
+    "type": "vision_activity_low",
+    "severity": "warning",
+    "message": "low activity for 3 frames",
+    "value": 0.0,
+    "threshold": 0.01,
+    "createdAt": 1440000,
+    "deviceId": "vision-ai",
+    "params": {
+      "frames": 3,
+      "activity": 0.0
+    }
+  },
+  {
+    "type": "vision_activity_low",
+    "severity": "critical",
+    "message": "low activity for 6 frames",
+    "value": 0.0,
+    "threshold": 0.01,
+    "createdAt": 1530000,
+    "deviceId": "vision-ai",
+    "params": {
+      "frames": 6,
+      "activity": 0.0
+    }
+  },
+  {
+    "type": "vision_stale",
+    "severity": "warning",
+    "message": "no vision frame for 15 min",
+    "value": 15.0,
+    "threshold": 10.0,
+    "createdAt": 2670000,
+    "deviceId": "vision-ai",
+    "params": {
+      "minutes": 15.0
+    }
+  }
+]

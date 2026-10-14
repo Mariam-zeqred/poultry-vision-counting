@@ -12,7 +12,13 @@ from PIL import Image
 from poultry_vision import dataset
 from poultry_vision.evaluate import ImageResult, match, summarise
 from poultry_vision.heatmap import density_grid, hotspot_ratio, occupancy_fraction, smooth
-from poultry_vision.rules import Alert, FrameStats, VisionAlertEngine, VisionThresholds
+from poultry_vision.rules import (
+    HOTSPOT_GRID,
+    Alert,
+    FrameStats,
+    VisionAlertEngine,
+    VisionThresholds,
+)
 
 
 def cmd_fetch(a: argparse.Namespace) -> None:
@@ -43,7 +49,7 @@ def cmd_run(a: argparse.Namespace) -> None:
                 "image": p.name,
                 "count": len(boxes),
                 "max_conf": round(max((b.conf for b in boxes), default=0.0), 3),
-                "hotspot_ratio": round(hotspot_ratio(grid), 2),
+                "hotspot_ratio": round(hotspot_ratio(density_grid(boxes, *HOTSPOT_GRID)), 2),
                 "occupancy": round(occupancy_fraction(grid), 3),
                 "gt_chickens": gts[p.stem].gt_chickens if p.stem in gts else "",
             }
@@ -70,7 +76,7 @@ def evaluate_records(det, recs, image_dir: Path, conf: float | None = None) -> l
     for r in recs:
         boxes = det.detect(r.path(image_dir), conf=conf)
         tp, fp, fn = match(boxes, list(r.boxes))
-        grid = density_grid(boxes)
+        grid = density_grid(boxes, *HOTSPOT_GRID)
         results.append(
             ImageResult(
                 r.image_id,
